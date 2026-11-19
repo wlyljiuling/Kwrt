@@ -8,8 +8,14 @@
 
 name: Build OpenWrt
 
-on: 
+on:
   repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'target'
+        required: true
+        default: 'qualcommbe_ipq53xx'
 
 env:
   REPO_TOKEN: ${{ secrets.TOKEN_KIDDIN9 }}
@@ -31,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ["${{ github.event.client_payload.target }}"]
+        target: ["${{ github.event.client_payload.target || inputs.target }}"]
         
     steps:
     - name: Checkout
